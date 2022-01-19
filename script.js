@@ -15,6 +15,36 @@ const dummyTransactions = [
 
 let transactions = dummyTransactions;
 
+
+// Add Transaction
+function addTransaction(e) {
+	e.preventDefault();
+
+	if(text.value.trim() === '' || amount.value.trim() === ''){
+		alert('Please add a text and amount');
+	} else {
+		const transaction = {
+			id: generateID(),
+			text: text.value,
+			amount: +amount.value
+		}
+
+		transactions.push(transaction);
+
+		addTransactionDOM(transaction);
+
+		updateValues();
+
+		text.value = '';
+		amount.value = '';	
+	}
+}
+
+// Generate random ID
+function generateID() {
+	return Math.floor(Math.random() * 100000000);
+}
+
 // Add transaction to DOM list
 function addTransactionDOM(transaction) {
 	// Get '+' or '-' sign
@@ -49,7 +79,7 @@ function updateValues() {
 	// Adds expenses
 	const expense = (
 		amounts.filter(item => item < 0).reduce((acc,item) => (acc += item), 0) * -1).toFixed(2);
-	
+	 
 	balance.innerText = `$${total}`;
 	money_plus.innerText = `$${income}`;
 	money_minus.innerText = `$${expense}`;
@@ -64,3 +94,5 @@ function init() {
 }
 
 init();
+
+form.addEventListener('submit', addTransaction);
